@@ -27,9 +27,9 @@ const getHighlightHtml = (text, highlights, escape = false, handleLineEnding = f
     let highlightContent = text.substring(start, end)
     if (handleLineEnding && text.endsWith('\n') && end === text.length) {
       highlightContent = highlightContent.substring(start, end - 1) +
-      (escape
-        ? getEscapeHTML('ag-line-end', '\n')
-        : '<span class="ag-line-end">\n</span>')
+        (escape
+          ? getEscapeHTML('ag-line-end', '\n')
+          : '<span class="ag-line-end">\n</span>')
     }
     code += escape
       ? getEscapeHTML(className, highlightContent)
@@ -39,9 +39,9 @@ const getHighlightHtml = (text, highlights, escape = false, handleLineEnding = f
   if (pos !== text.length) {
     if (handleLineEnding && text.endsWith('\n')) {
       code += text.substring(pos, text.length - 1) +
-      (escape
-        ? getEscapeHTML('ag-line-end', '\n')
-        : '<span class="ag-line-end">\n</span>')
+        (escape
+          ? getEscapeHTML('ag-line-end', '\n')
+          : '<span class="ag-line-end">\n</span>')
     } else {
       code += text.substring(pos)
     }
@@ -114,8 +114,64 @@ export default function renderLeafBlock (parent, block, activeBlocks, matches, u
         this.tokenCache.set(text, tokens)
       }
     }
+    // console.log(...this[snakeToCamel(token.type)])
+    // console.log(...this[snakeToCamel(token.type)])
+    /* tokens.reduce((acc, token) => {
+          console.log(snakeToCamel(token.type))
+          console.log('bRUUUUUU', ...this[snakeToCamel(token.type)])
+        },
+          []) */
+    // children = tokens.map(token => this[snakeToCamel(token.type)](h, cursor, block, token))
 
-    children = tokens.reduce((acc, token) => [...acc, ...this[snakeToCamel(token.type)](h, cursor, block, token)], [])
+    children = []
+
+    // console.log(Object.keys(this))
+    // console.log(Object.getOwnPropertyNames(this.prototype))
+    // console.log(typeof this)
+    // console.log(this.prototype)
+
+    /* const isGetter = (x, name) => (Object.getOwnPropertyDescriptor(x, name) || {}).get
+    const isFunction = (x, name) => typeof x[name] === 'function'
+    const deepFunctions = x =>
+      x && x !== Object.prototype &&
+      Object.getOwnPropertyNames(x)
+        .filter(name => isGetter(x, name) || isFunction(x, name))
+        .concat(deepFunctions(Object.getPrototypeOf(x)) || [])
+    const distinctDeepFunctions = x => Array.from(new Set(deepFunctions(x)))
+    const userFunctions = x => distinctDeepFunctions(x).filter(name => name !== 'constructor' && !~name.indexOf('__')).sort()
+    console.log(userFunctions(this).sort()) */
+
+    for (let i = 0, len = tokens.length; i < len; i++) {
+      // console.log(snakeToCamel(tokens[i].type))
+      const dynamicReturned = this[snakeToCamel(tokens[i].type)](h, cursor, block, tokens[i])
+      // merge 2 arrays of object
+      Array.prototype.push.apply(children, dynamicReturned)
+    }
+
+    /* tokens.forEach(token => {
+      // call every function in tokens
+      const dynamicReturned = this[snakeToCamel(token.type)](h, cursor, block, token)
+      console.log(...dynamicReturned)
+      children.push(...dynamicReturned)
+    }) */
+
+    /* children = tokens.reduce((accumulator, token) => {
+      // this = ContentState
+      const dynamicFunc = this[snakeToCamel(token.type)](h, cursor, block, token)
+      const toSpread = dynamicFunc(h, cursor, block, token)
+      // console.log('toSpread', toSpread)
+      // return accumulator.concat(toSpread)
+      // console.log([...accumulator, ...toSpread])
+      return [...accumulator, ...toSpread]
+    }, // initial value: empty array
+      []) */
+
+    /* children = tokens.reduce((acc, token) => [
+      ...acc,
+      ...this[snakeToCamel(token.type)](h, cursor, block, token)
+    ],
+      []) */
+    // console.log('children', children)
   }
 
   if (editable === false) {
@@ -252,6 +308,8 @@ export default function renderLeafBlock (parent, block, activeBlocks, matches, u
   } else if (type === 'span' && functionType === 'footnoteInput') {
     Object.assign(data.attrs, { spellcheck: 'false' })
   }
+
+  console.log('finalChildren', children)
 
   if (!block.parent) {
     return h(selector, data, [this.renderIcon(block), ...children])

@@ -125,7 +125,8 @@ export default {
       type: String,
       required: true
     },
-    platform: String
+    platform: String,
+    editorId: Number
   },
 
   computed: {
@@ -611,8 +612,8 @@ export default {
           vegaTheme: 'latimes'
         })
       }
-
-      const { container } = this.editor = new Muya(ele, options)
+      console.log(this.editorId)
+      const { container } = this.editor = new Muya(ele, options, this.editorId)
 
       // Create spell check wrapper and enable spell checking if prefered.
       this.spellchecker = new SpellChecker(spellcheckerEnabled)

@@ -88,7 +88,8 @@ export const isBlockContainer = element => {
 }
 
 export const isMuyaEditorElement = element => {
-  return element && element.id === CLASS_OR_ID.AG_EDITOR_ID
+  return element && element.classList.contains('muya-editor')
+  // return element && element.id === CLASS_OR_ID.AG_EDITOR_ID
 }
 
 export const traverseUp = (current, testElementFunction) => {

@@ -20,11 +20,14 @@ const paragraphCtrl = ContentState => {
       // TODO: Throw an exception and try to fix this later (GH#848).
       throw new Error('selectionChange: expected cursor but cursor is null.')
     }
+    console.log(start, end)
     const cursorCoords = selection.getCursorCoords()
     const startBlock = this.getBlock(start.key)
     const endBlock = this.getBlock(end.key)
     const startParents = this.getParents(startBlock)
     const endParents = this.getParents(endBlock)
+    console.log('startParents', startParents)
+    console.log('endParents', endParents)
     const affiliation = startParents
       .filter(p => endParents.includes(p))
       .filter(p => PARAGRAPH_TYPES.includes(p.type))

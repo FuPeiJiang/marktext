@@ -23,7 +23,8 @@ class Muya {
     })
   }
 
-  constructor (container, options) {
+  constructor (container, options, editorId) {
+    this.editorId = editorId
     this.options = Object.assign({}, MUYA_DEFAULT_OPTION, options)
     const { markdown } = this.options
     this.markdown = markdown
@@ -86,7 +87,7 @@ class Muya {
             }
           }
 
-          if (target.getAttribute('id') === 'ag-editor-id' && target.childElementCount === 0) {
+          if (target.getAttribute('id') === `ag-editor-id${this.editorId}` && target.childElementCount === 0) {
             // TODO: the editor can not be input any more. report bugs and recovery...
             eventCenter.dispatch('crashed')
             console.warn('editor crashed, and can not be input any more.')
@@ -446,6 +447,7 @@ function getContainer (originContainer, options) {
   const attrs = originContainer.attributes
   // copy attrs from origin container to new div element
   Array.from(attrs).forEach(attr => {
+    // console.log(attr.name, attr.value)
     container.setAttribute(attr.name, attr.value)
   })
 
@@ -460,6 +462,7 @@ function getContainer (originContainer, options) {
   // a custom implementation like in Mark Text.
   container.setAttribute('spellcheck', !!spellcheckEnabled)
   container.appendChild(rootDom)
+  // console.log(container)
   originContainer.replaceWith(container)
   return container
 }

@@ -516,7 +516,8 @@ class Selection {
       focusNode = anchorNode
       focusOffset = anchorOffset
     } else if (!isAnchorValid && !isFocusValid) {
-      const editor = document.querySelector('#ag-editor-id').parentNode
+      // const editor = document.querySelector('#ag-editor-id').parentNode
+      const editor = document.getElementsByClassName('muya-editor')[0]
       editor.blur()
 
       return new Cursor({

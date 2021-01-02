@@ -166,16 +166,32 @@ class StateRender {
   }
 
   render (blocks, activeBlocks, matches) {
-    const selector = `div#${CLASS_OR_ID.AG_EDITOR_ID}`
+    // console.log('this.muya.editorId', this.muya.editorId)
+    const selector = `div#${CLASS_OR_ID.AG_EDITOR_ID}${this.muya.editorId}.muya-editor`
+    // const selector = `div#${CLASS_OR_ID.AG_EDITOR_ID}`
     const children = blocks.map(block => {
       return this.renderBlock(null, block, activeBlocks, matches, true)
     })
+    // console.log('children', children)
 
+    // console.log('before', document.querySelector(selector))
     const newVdom = h(selector, children)
+    // console.log('newVdom', newVdom)
+
+    /* if (document.querySelector(selector)) {
+      // if already exists
+      console.log('ifa', document.querySelector(selector))
+    } else {
+      // if not exist
+      console.log('else', this.container)
+    } */
+
     const rootDom = document.querySelector(selector) || this.container
+    // console.log('after', rootDom)
     const oldVdom = toVNode(rootDom)
 
-    patch(oldVdom, newVdom)
+    patch(oldVdom, newVdom) // replace empty with New
+    // console.log('after everything', document.querySelector(selector))
     this.renderMermaid()
     this.renderDiagram()
     this.codeCache.clear()
@@ -190,9 +206,10 @@ class StateRender {
     const html = toHTML(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1')
 
     const needToRemoved = []
+    // console.log('startKey', startKey)
     const firstOldDom = startKey
       ? document.querySelector(`#${startKey}`)
-      : document.querySelector(`div#${CLASS_OR_ID.AG_EDITOR_ID}`).firstElementChild
+      : document.querySelector(`div#${CLASS_OR_ID.AG_EDITOR_ID}${this.muya.editorId}`).firstElementChild
     if (!firstOldDom) {
       // TODO@Jocs Just for fix #541, Because I'll rewrite block and render method, it will nolonger have this issue.
       return
@@ -244,6 +261,11 @@ class StateRender {
   }
 }
 
+// console.log('renderInlines', renderInlines)
+// console.log('renderBlock', renderBlock)
 mixins(StateRender, renderInlines, renderBlock)
+
+// console.log('StateRender', StateRender)
+// console.log('StateRender', StateRender.toString())
 
 export default StateRender

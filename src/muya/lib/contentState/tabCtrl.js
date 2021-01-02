@@ -376,6 +376,7 @@ const tabCtrl = ContentState => {
             break
         }
         if (id) {
+          console.log('REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', id)
           html += ` id="${id}"`
         }
         if (className) {

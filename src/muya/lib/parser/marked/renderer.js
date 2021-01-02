@@ -86,6 +86,18 @@ Renderer.prototype.html = function (html) {
 
 Renderer.prototype.heading = function (text, level, raw, slugger, headingStyle) {
   if (this.options.headerIds) {
+    console.log('REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEErenderer', '<h' +
+    level +
+    ' id="' +
+    this.options.headerPrefix +
+    slugger.slug(raw) +
+    '" class="' +
+    headingStyle +
+    '">' +
+    text +
+    '</h' +
+    level +
+    '>\n')
     return '<h' +
       level +
       ' id="' +

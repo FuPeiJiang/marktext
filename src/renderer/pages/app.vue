@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="editor-container"
-  >
+  <div class="editor-container">
     <side-bar v-if="init"></side-bar>
     <div class="editor-middle">
       <title-bar
@@ -14,18 +12,20 @@
         :is-saved="isSaved"
       ></title-bar>
       <div class="editor-placeholder" v-if="!init"></div>
-      <recent
-        v-if="!hasCurrentFile && init"
-      ></recent>
-      <editor-with-tabs
-        v-if="hasCurrentFile && init"
-        :markdown="markdown"
-        :cursor="cursor"
-        :source-code="sourceCode"
-        :show-tab-bar="showTabBar"
-        :text-direction="textDirection"
-        :platform="platform"
-      ></editor-with-tabs>
+      <recent v-if="!hasCurrentFile && init"></recent>
+      <div v-for="editorId in 2" :key="editorId.id">
+        <editor-with-tabs
+          v-if="hasCurrentFile && init"
+          :markdown="markdown"
+          :cursor="cursor"
+          :source-code="sourceCode"
+          :show-tab-bar="showTabBar"
+          :text-direction="textDirection"
+          :platform="platform"
+          :editor-id="editorId"
+        ></editor-with-tabs>
+      </div>
+
       <aidou></aidou>
       <command-palette></command-palette>
       <about-dialog></about-dialog>
@@ -73,6 +73,7 @@ export default {
   mixins: [loadingPageMixins],
   data () {
     return {
+      uniqEditorId: 0
     }
   },
   computed: {
@@ -97,6 +98,12 @@ export default {
     hasCurrentFile () {
       return this.markdown !== undefined
     }
+  },
+  methods: {
+    // getUniqEditorId: function () {
+      // console.log(this.uniqEditorId)
+      // return this.uniqEditorId++
+    // }
   },
   watch: {
     theme: function (value, oldValue) {
@@ -195,35 +202,35 @@ export default {
 </script>
 
 <style scoped>
-  .editor-placeholder,
-  .editor-container {
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  .editor-container .hide {
-    z-index: -1;
-    opacity: 0;
-    position: absolute;
-    left: -10000px;
-  }
-  .editor-placeholder {
-    background: var(--editorBgColor);
-  }
-  .editor-middle {
-    display: flex;
-    flex-direction: column;
+.editor-placeholder,
+.editor-container {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.editor-container .hide {
+  z-index: -1;
+  opacity: 0;
+  position: absolute;
+  left: -10000px;
+}
+.editor-placeholder {
+  background: var(--editorBgColor);
+}
+.editor-middle {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+  position: relative;
+  & > .editor {
     flex: 1;
-    min-height: 100vh;
-    position: relative;
-    & > .editor {
-      flex: 1;
-    }
   }
+}
 </style>

@@ -74,6 +74,9 @@ class ContentState {
     this.exemption = new Set()
     this.blocks = [this.createBlockP()]
     this.stateRender = new StateRender(muya)
+    // console.log('stateRenderr', this.stateRender)
+    // console.log('stateRender', this.stateRender.toString().toString())
+    // console.log('stateRender', this.stateRender.toString())
     this.renderRange = [null, null]
     this.currentCursor = null
     // you'll select the outmost block of current cursor when you click the front icon.
@@ -283,6 +286,21 @@ class ContentState {
    * a `span` block must in a `p block` or `pre block` and `p block`'s children must be `span` blocks.
    */
   createBlock (type = 'span', extras = {}) {
+    // var callerName
+    // try {
+    // throw new Error()
+    // } catch (e) {
+    // var re = /(\w+)@|at (\w+) \(/g
+    // var st = e.stack
+    // var m
+    // re.exec(st)
+    // m = re.exec(st)
+    // callerName = m[1] || m[2]
+    // }
+    // console.log(callerName)
+    // console.log(this.createBlock.caller)
+    // alert('caller is ' + arguments.callee.caller.toString())
+    // console.log('caller is ' + arguments.callee.caller.toString())
     const key = getUniqueId()
     const blockData = {
       key,

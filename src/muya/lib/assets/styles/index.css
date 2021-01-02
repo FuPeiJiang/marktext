@@ -54,7 +54,7 @@ mark::after {
   content: " [highlight end] ";
 }
 
-#ag-editor-id summary {
+.muya-editor summary {
   outline: none;
 }
 

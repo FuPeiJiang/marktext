@@ -10,7 +10,9 @@ const clickCtrl = ContentState => {
     const { target } = event
     if (isMuyaEditorElement(target)) {
       const lastBlock = this.getLastBlock()
+      console.log(lastBlock)
       const archor = this.findOutMostBlock(lastBlock)
+      console.log(archor.key)
       const archorParagraph = document.querySelector(`#${archor.key}`)
       const rect = archorParagraph.getBoundingClientRect()
       // If click below the last paragraph

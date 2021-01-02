@@ -9,6 +9,7 @@
           :cursor="cursor"
           :text-direction="textDirection"
           :platform="platform"
+          :editor-id="editorId"
         ></editor>
         <source-code
           v-if="sourceCode"
@@ -53,6 +54,10 @@ export default {
     },
     platform: {
       type: String,
+      required: true
+    },
+    editorId: {
+      type: Number,
       required: true
     }
   },

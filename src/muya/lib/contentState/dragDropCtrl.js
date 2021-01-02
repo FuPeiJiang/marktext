@@ -45,7 +45,7 @@ const dragDropCtrl = ContentState => {
       ghost = document.querySelector(`#${GHOST_ID}`)
       if (!ghost) {
         ghost = document.createElement('div')
-        ghost.id = GHOST_ID
+    ghost.id = GHOST_ID
         document.body.appendChild(ghost)
       }
 
